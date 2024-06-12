@@ -1,10 +1,20 @@
 <template>
-    <lightning-card title="Upload Document" icon-name="custom:custom14">
-        <lightning-input type="file" label="Select File" onchange={handleFileChange}></lightning-input>
-        <template if:true={fileName}>
-            <p>Selected File: {fileName}</p>
+    <lightning-card title="Upload Documents" icon-name="custom:custom14">
+        <lightning-input type="file" label="Select Files" onchange={handleFileChange} multiple></lightning-input>
+        <template if:true={files.length}>
+            <ul>
+                <template for:each={files} for:item="file">
+                    <li key={file.name}>
+                        {file.name}
+                        <template if:true={file.isUploading}>
+                            <lightning-progress-bar value={file.uploadProgress} class="progress-bar-custom"></lightning-progress-bar>
+                        </template>
+                    </li>
+                </template>
+            </ul>
         </template>
         <lightning-button label="Upload" onclick={handleUpload} class="slds-m-top_medium"></lightning-button>
     </lightning-card>
-</template>
+</template> 
+
 

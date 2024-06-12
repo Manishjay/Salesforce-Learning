@@ -1,67 +1,99 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import uploadDocument from '@salesforce/apex/DocumentUploaderController.uploadDocument';
 
 export default class DocumentUploader extends LightningElement {
-    @api recordId;
-    fileData;
-    fileName;
+    
+    @track files = [];
 
     handleFileChange(event) {
-        const file = event.target.files[0];
-        if (file) {
-            this.fileName = file.name;
+        const selectedFiles = Array.from(event.target.files);
+        this.files = selectedFiles.map(file => ({
+            name: file.name,
+            content: null,
+            base64: null,
+            contentType: file.type,
+            isUploading: false,
+            uploadProgress: 0
+        }));
+
+        selectedFiles.forEach(file => {
             const reader = new FileReader();
             reader.onload = () => {
                 const base64 = reader.result.split(',')[1];
-               // console.log(base64); 
-                this.fileData = {
-                    filename: file.name,
-                    base64: base64,
-                    contentType: file.type
-                };
+                this.files = this.files.map(f => 
+                    f.name === file.name ? { ...f, content: reader.result, base64: base64 } : f
+                );
             };
             reader.readAsDataURL(file);
-        }
+        });
     }
-    
+
     handleUpload() {
-        if (this.fileData) {
-            uploadDocument({ 
-                base64Data: this.fileData.base64, 
-                filename: this.fileData.filename, 
-                contentType: this.fileData.contentType, 
-                recordId: this.recordId 
-            })
-            .then(result => {
-                console.log(result);
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Success',
-                        message: 'Document uploaded successfully',
-                        variant: 'success'
-                    })
-                );
-                this.fileData = null;
-                this.fileName = null; 
-            })
-            .catch(error => {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Error uploading document',
-                        message: error.body.message,
-                        variant: 'error'
-                    })
-                );
-            });
-        } else {
+        if (this.files.length === 0) {
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: 'Error',
-                    message: 'Please select a file to upload',
+                    message: 'Please select files to upload',
                     variant: 'error'
                 })
             );
+            return;
         }
+
+        this.uploadNextFile(0);
+    }
+
+    uploadNextFile(index) {
+        if (index >= this.files.length) {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Success',
+                    message: 'Documents uploaded successfully',
+                    variant: 'success'
+                })
+            );
+            this.files = [];
+            return;
+        }
+
+        const file = this.files[index];
+        file.isUploading = true;
+        file.uploadProgress = 0;
+
+        this.files = [...this.files]; 
+
+        // Simulate upload progress
+        const simulateProgress = () => {
+            if (file.uploadProgress < 100) {
+                file.uploadProgress += 10;
+                this.files = [...this.files]; 
+                setTimeout(simulateProgress, 100);
+            } else {
+                uploadDocument({
+                    base64Data: file.base64,
+                    filename: file.name,
+                    contentType: file.contentType,
+                    // recordId: this.recordId
+                })
+                .then(() => {
+                    file.isUploading = false;
+                    this.files = [...this.files]; 
+                    this.uploadNextFile(index + 1);
+                })
+                .catch(error => {
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Error uploading document',
+                            message: error.body.message,
+                            variant: 'error'
+                        })
+                    );
+                });
+            }
+        };
+        simulateProgress();
     }
 }
+
+
