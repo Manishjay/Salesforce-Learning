@@ -1,0 +1,23 @@
+<template>
+    <lightning-card title="Case Documents" icon-name="standard:case">
+        <lightning-file-upload
+            label="Upload File"
+            name="fileUploader"
+            record-id={recordId}
+            onuploadfinished={handleUploadFinished}> 
+        </lightning-file-upload>
+        <template if:true={files}>
+            <lightning-layout multiple-rows>
+                <template for:each={files} for:item="file">
+                    <lightning-layout-item key={file.id} size="12">
+                        <lightning-card title={file.title} icon-name="doctype:attachment">
+                            <lightning-button label="Download" onclick={handleDownload} data-id={file.contentDocumentId}></lightning-button>
+                            <lightning-button label="Delete" data-id={file.id} onclick={deleteFile}></lightning-button>
+                        </lightning-card>
+                    </lightning-layout-item>
+                </template>
+            </lightning-layout>
+        </template>
+    </lightning-card>
+</template>
+

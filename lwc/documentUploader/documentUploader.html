@@ -1,0 +1,10 @@
+<template>
+    <lightning-card title="Upload Document" icon-name="custom:custom14">
+        <lightning-input type="file" label="Select File" onchange={handleFileChange}></lightning-input>
+        <template if:true={fileName}>
+            <p>Selected File: {fileName}</p>
+        </template>
+        <lightning-button label="Upload" onclick={handleUpload} class="slds-m-top_medium"></lightning-button>
+    </lightning-card>
+</template>
+

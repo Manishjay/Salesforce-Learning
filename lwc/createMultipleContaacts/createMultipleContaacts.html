@@ -1,0 +1,48 @@
+<template>
+
+    <div class="slds-modal__header header">
+        ADD MULTIPLE CONTACTS
+    </div>
+
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <td>First Name:<span class="slds-required">*</span></td>
+                    <td>Last Name:<span class="slds-required">*</span></td>
+                    <td>Email:</td>
+                    <td>Gender:</td>
+                    <td>
+                        <lightning-button-icon icon-name="utility:add" title="Add New Contact" onclick={addNewHandler}></lightning-button-icon>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={contacts} for:item="contact">
+                <tr key={contact.tempId}>
+                  <td>
+                    <lightning-input label="First Name" variant="label-hidden" onblur={elementChangeHandler} name="FirstName" placeholder="Enter First Name" data-temp-id={contact.tempId} ></lightning-input>
+                  </td>
+                  <td>
+                    <lightning-input label="Last Name" variant="label-hidden" onblur={elementChangeHandler} name="LastName" placeholder="Enter Last Name" ></lightning-input>
+                  </td>
+                  <td>
+                    <lightning-input label="Email" variant="label-hidden" onblur={elementChangeHandler} name="Email" placeholder="Enter Email Here" ></lightning-input>
+                  </td>
+                  <td>
+                    <lightning-combobox label="Gender" variant="label-hidden" onblur={elementChangeHandler} name="GenderIdentity" placeholder="Select Gender" options={getGenderPicklistValues}></lightning-combobox>
+                  </td>
+                  <td>
+                    <lightning-button icon-name="utility:delete" title="Delete Contact" onclick={deleteHandler} data-temp-id={contact.tempId}></lightning-button>
+                  </td>
+                </tr>
+            </template>
+            </tbody>
+        </table>
+    </div>
+    
+   <div class="slds-modal__footer">
+        <lightning-button label="Submit" variant="brand" onclick={submitClickHandler}></lightning-button>
+   </div>
+    
+</template>

@@ -1,0 +1,35 @@
+<template>
+    <lightning-card title="empDirectory">
+        <lightning-layout>
+            <template for:each={employees} for:item="employee">
+                <lightning-layout-item key={employee.Id} size="6" padding="around-small">
+                    <p><b>{employee.Name}</b></p>
+                    <p>Email: {employee.Email}</p>
+                    <p>Department: {employee.Department}</p>
+                    <p>Position: {employee.Position}</p>
+                    <p>Date of Birth: {employee.Date_of_Birth}</p>
+                    <p>Phone: {employee.Phone}</p>
+                    <lightning-button-group>
+                        <lightning-button label="Edit" onclick={handleEdit} value={employee.Id} variant="neutral"></lightning-button>
+                        <lightning-button label="Delete" onclick={handleDelete} value={employee.Id} variant="destructive"></lightning-button>
+                    </lightning-button-group>
+                </lightning-layout-item>
+            </template>
+        </lightning-layout>
+    </lightning-card>
+    <lightning-button label="Add Employee" onclick={handleAddEmployee}></lightning-button>
+    <lightning-dialog if:true={showModal} header="Add Employee" size="small">
+        <div class="slds-p-around_medium">
+            <lightning-input label="Name" value={name} onchange={handleNameChange}></lightning-input>
+            <lightning-input label="Email" type="email" value={email} onchange={handleEmailChange}></lightning-input>
+            <lightning-input label="Department" value={department} onchange={handleDepartmentChange}></lightning-input>
+            <lightning-input label="Position" value={position} onchange={handlePositionChange}></lightning-input>
+            <lightning-input type="date" label="Date of Birth" value={dob} onchange={handleDobChange}></lightning-input>
+            <lightning-input type="tel" label="Phone" value={phone} onchange={handlePhoneChange}></lightning-input>
+        </div>
+        <div class="slds-p-around_small">
+            <lightning-button label="Cancel" onclick={closeModal}></lightning-button>
+            <lightning-button label="Save" onclick={handleSave} variant="brand"></lightning-button>
+        </div>
+    </lightning-dialog>
+</template>

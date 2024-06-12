@@ -1,0 +1,33 @@
+<template>
+    <lightning-card title="EMI Calculator" class="slds-box slds-theme_default">
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                <label for="loanAmount">Loan amount</label>
+                <lightning-input type="range" min="100000" max="10000000" value={loanAmount} step="10000" onchange={handleLoanAmountChange}>
+                </lightning-input>
+                <p class="slds-text-heading_medium">₹ {loanAmount}</p>
+
+                <label for="interestRate">Rate of interest (p.a)</label>
+                <lightning-input type="range" min="1" max="20" value={interestRate} step="0.1" onchange={handleInterestRateChange}>
+                </lightning-input>
+                <p class="slds-text-heading_medium">{interestRate} %</p>
+
+                <label for="loanTenure">Loan tenure</label>
+                <lightning-input type="range" min="1" max="30" value={loanTenure} step="1" onchange={handleLoanTenureChange}>
+                </lightning-input>
+                <p class="slds-text-heading_medium">{loanTenure} Yr</p>
+            </div>
+
+            <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                <canvas class="chart"></canvas>
+            </div>
+        </div>
+
+        <div class="slds-m-around_medium">
+            <p>Monthly EMI: ₹{emi}</p>
+            <p>Principal amount: ₹{loanAmount}</p>
+            <p>Total interest: ₹{totalInterest}</p>
+            <p>Total amount: ₹{totalAmount}</p>
+        </div>
+    </lightning-card>
+</template>

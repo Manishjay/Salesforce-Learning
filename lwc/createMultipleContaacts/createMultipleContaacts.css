@@ -1,0 +1,12 @@
+.header{
+    font-weight: 700;
+    background-color: lightblue;
+}
+
+thead tr td {
+    padding: 8px;
+    font-weight: 600;
+}
+
+
+

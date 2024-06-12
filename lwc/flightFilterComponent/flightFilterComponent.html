@@ -1,0 +1,40 @@
+<template>
+    <lightning-card title="Flight Filters" icon-name="standard:travel_plan">
+        <div class="slds-m-around_medium">
+            <lightning-input label="Origin" name="origin" value={origin} onchange={handleInputChange}></lightning-input>
+            <lightning-input label="Destination" name="destination" value={destination} onchange={handleInputChange}></lightning-input>
+            <lightning-input label="Departure Date" name="departureDate" type="date" value={departureDate} onchange={handleInputChange}></lightning-input>
+            <lightning-input label="Return Date" name="returnDate" type="date" value={returnDate} onchange={handleInputChange}></lightning-input>
+            <lightning-input label="Adults" name="adults" type="number" value={adults} onchange={handleInputChange}></lightning-input>
+            
+            <h2>Cabin Class:</h2>
+            <lightning-input label="Economy" type="checkbox" name="Economy" onchange={handleCabinClassChange}></lightning-input>
+            <lightning-input label="Business" type="checkbox" name="Business" onchange={handleCabinClassChange}></lightning-input>
+            <lightning-input label="First Class" type="checkbox" name="First Class" onchange={handleCabinClassChange}></lightning-input>
+            
+            <!-- <lightning-combobox label="Trip Type" name="tripType" value={tripType} onchange={handleInputChange}
+                                options="[{'label': 'Round Trip', 'value': 'Round Trip'}, {'label': 'One Way', 'value': 'One Way'}, {'label': 'Multi-city', 'value': 'Multi-city'}]">
+            </lightning-combobox> -->
+            
+            <lightning-input label="Direct Flights Only" type="checkbox" name="directFlights" onchange={handleCheckboxChange}></lightning-input>
+
+            <div class="slds-form-element">
+                <label class="slds-form-element__label" for="price-slider">
+                    <span class="slds-slider-label">
+                        <span class="slds-slider-label__label">Max Price</span>
+                        <span class="slds-slider-label__range">0 - {maxPrice}</span>
+                    </span>
+                </label>
+                <div class="slds-form-element__control">
+                    <div class="slds-slider slds-size_x-small">
+                        <input type="range" id="price-slider" class="slds-slider__range" value={selectedPrice} min="0" max={maxPrice} oninput={handleSliderChange}/>
+                        <span class="slds-slider__value" aria-hidden="true">{selectedPrice}</span>
+                    </div>
+                </div>
+            </div>
+
+            <lightning-button label="Search" onclick={search}></lightning-button>
+            <lightning-button label="Clear Filters" onclick={clearFilter}></lightning-button>
+        </div>
+    </lightning-card>
+</template>
