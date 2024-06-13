@@ -1,0 +1,39 @@
+<template>
+    <lightning-card title="File Upload" icon-name="custom:custom14">
+        <div class="slds-p-horizontal_small">
+            <lightning-combobox
+                name="fileType"
+                label="File Type"
+                value={fileType}
+                placeholder="Select File Type"
+                options={fileTypeOptions}
+                onchange={handleFileTypeChange}>
+            </lightning-combobox>
+            <template if:true={isDocumentType}>
+                <lightning-input
+                    label="Document Folder ID"
+                    value={folderId}
+                    onchange={handleFolderIdChange}>
+                </lightning-input>
+            </template>
+            <lightning-input
+                type="file"
+                label="Select File"
+                accept={acceptedFormats}
+                onchange={handleFileInputChange}>
+            </lightning-input>
+            <template if:true={selectedFileName}>
+                <p>Selected File: {selectedFileName}</p>
+            </template>
+            <lightning-button
+                label="Upload File"
+                onclick={handleUpload}>
+            </lightning-button>
+        </div>
+        <lightning-datatable
+            data={logs}
+            columns={columns}
+            key-field="Id">
+        </lightning-datatable>
+    </lightning-card>
+</template>
