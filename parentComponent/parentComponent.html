@@ -1,0 +1,10 @@
+<template>
+    <lightning-card title="Parent Component">
+        <div class="slds-m-around_medium">
+            <c-child-form onformvaliditychange={handleFormValidityChange}></c-child-form>
+            <lightning-button label="Submit Form" onclick={handleSubmit} disabled={isFormInvalid}></lightning-button>
+            <p>Status: {formStatus}</p>
+        </div>
+    </lightning-card>
+</template>
+
